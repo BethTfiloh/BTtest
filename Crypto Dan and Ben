@@ -1,8 +1,6 @@
-import Tkinter
 from Tkinter import *
 
-
-
+# Global Variables
 dictionary = {"A": "Y", "B": "K", "C": "Q", "D": "W", "E": "X", "F": "P", "G": "L",
               "H": "A", "I": "B", "J": "M", "K": "T", "L": "F", "M": "U", "N": "V",
               "O": "H", "P": "O", "Q": "D", "R": "N", "S": "C", "T": "J", "U": "R",
@@ -17,12 +15,12 @@ dictionary3 = {"1": "A", "2": "B", "3":""}
 
 
 
-
 def enigma_encrypt(plaintext):       #First Encryption Scheme
     cipher = ''
     for index in range(len(plaintext)):
         cipher += dictionary[plaintext[index]]
     return cipher
+
 
 def enigma_encrypt2(plaintext):       #First Encryption Scheme
     cipher = ''
@@ -41,6 +39,23 @@ def enigma_decrypt(plaintext):
     cipher = ""
 
 
+#Runs the plaintext through enigma encrypt, Caesar encryption scheme 1, engima encrypt 2, Caesar encryption
+#scheme 2, enigma encrypt 2, and once more through enigma encrypt 1; slightly repetitive yet absurdly secure
+def full_encrypt(plaintext, key1, key2):
+    encrypt = enigma_encrypt(plaintext)
+    print encrypt
+    encrypt = caesar_encrypt(encrypt,key1)
+    print encrypt
+    encrypt = enigma_encrypt2(encrypt)
+    print encrypt
+    encrypt = caesar_encrypt(encrypt, key2)
+    print encrypt
+    encrypt = enigma_encrypt2(encrypt)
+    print encrypt
+    encrypt = enigma_encrypt(encrypt)
+    print encrypt
+
+
 def main():
     """
     Instantiates  a Tkinter frame.
@@ -48,64 +63,32 @@ def main():
     """
     frame = Tk()
 
-    plaintext = Label( frame, text="GOOGLE")
+    plaintext = Label( frame, text="Plaintext to Encrypt")
     E1 = Entry(frame, bd =5)
 
-    label2 = Label( frame, text="Encryption Scheme 1")
+    label2 = Label( frame, text="Key 1")
     E2 = Entry(frame, bd =5)
 
-    label3 = Label( frame, text="Encryption Scheme 2")
+    label3 = Label( frame, text="Key 2")
     E3 = Entry(frame, bd =5)
-
-    label4 = Label( frame, text="Encryption Hint 1")
-    E4 = Entry(frame, bd =5)
-
-    label5 = Label( frame, text="Encryption Hint 2")
-    E5 = Entry(frame, bd =5)
 
 
     #submit button calls an encryption method and encrypts
     #text in E1 widget
 
-    submit = Button( frame, text ="Submit", command= lambda: enigma_encrypt(plaintext.cget("text")))
 
 
    # We now place each individual widget into the frame
-
     plaintext.pack()
     E1.pack()
     label2.pack()
     E2.pack()
     label3.pack()
     E3.pack()
-    label4.pack()
-    E4.pack()
-    label5.pack()
-    E5.pack()
-    submit.pack(side =BOTTOM)
+    submit = Button( frame, text ="Submit", command= lambda: full_encrypt(E1.get(), int(E2.get()), int(E3.get())))
+    submit.pack(side = BOTTOM)
+
     frame.mainloop()
-
-            #Retrieves the string from the user input widgets and supposedly assigns them to a variable
-    plaintext = str(E1.get())
-    encryptscheme1 = str(E2.get())
-    encryptscheme2 = str(E3.get())
-    encrypyontint1 = str(E4.get())
-    encrypyontint2 = str(E5.get())
-
-
-    #Runs the plaintext through enigma encrypt, Caesar encryption scheme 1, engima encrypt 2, Caesar encryption
-    #scheme 2, enigma encrypt 2, and once more through enigma encrypt 1; slightly repetitive yet absurdly secure
-
-    encrypt = enigma_encrypt(plaintext)
-    encrypt = caesar_encrypt(encrypt, encryptscheme1)
-    encrypt = enigma_encrypt2(encrypt)
-    encrypt = caesar_encrypt(encrypt, encryptscheme2)
-    encrypt = enigma_encrypt2(encrypt)
-    encrypt = enigma_encrypt(encrypt)
-
-
-        #print the final encrypted plaintext, followed by the 2 encryption hints.
-    print encrypt, encrypyontint1, encrypyontint2
 
 if __name__ == "__main__":
     main()
